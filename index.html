@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Universo de Nosotros</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* Concepto: un cielo nocturno continuo. Estrellas fijas al fondo, secciones que son cielo, órbitas, carta sobre papel y un jardín final con tulipanes y dinosaurios. */
+:root{
+  --night:#0a0820; --night-2:#17123c; --ink:#fdf3e1; --muted:#bdb6d9;
+  --tulip:#ff5c93; --tulip-soft:#ffb3cd; --gold:#ffc65a; --mint:#7fe3b0;
+  --choco:#6b3a24; --choco-deep:#2b160e; --cream:#ffe8c4;
+  --paper:#fff4de; --paper-ink:#3a2418; --paper-line:#e8cfa6;
+  --card:rgba(255,255,255,.06); --line:rgba(255,255,255,.14);
+  --f-display:'Bagel Fat One','Arial Rounded MT Bold',system-ui,sans-serif;
+  --f-body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-letter:'Lora',Georgia,'Times New Roman',serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+  margin:0; background:var(--night); color:var(--ink); font-family:var(--f-body); font-size:17px; line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 110px; overflow-x:clip; position:relative;
+}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+   radial-gradient(60% 45% at 85% 8%,rgba(255,92,147,.20),transparent 70%),
+   radial-gradient(55% 50% at 5% 40%,rgba(110,80,255,.20),transparent 70%),
+   radial-gradient(50% 40% at 70% 90%,rgba(255,198,90,.10),transparent 70%),
+   linear-gradient(180deg,#0a0820,#120d33 60%,#0a0820);}
+#sky,#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+#sky{z-index:0}
+#fx{z-index:40}
+main,footer{position:relative;z-index:1}
+.wrap{max-width:1080px;margin-inline:auto}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.05;margin:0;text-wrap:balance}
+h2{font-size:clamp(2rem,6vw,3.4rem);color:var(--cream)}
+p{margin:0}
+.eyebrow{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:800}
+.lead{color:var(--muted);max-width:56ch;font-size:1.05rem}
+section{padding-block:clamp(48px,9vw,96px)}
+.sec-head{display:grid;gap:12px;margin-bottom:32px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+
+/* HERO */
+.hero{padding-top:clamp(36px,7vw,72px);padding-bottom:clamp(24px,4vw,40px);position:relative}
+.hero h1{font-size:clamp(2.6rem,9.5vw,6rem);margin-block:14px 18px;max-width:12ch}
+.hero h1 em{font-style:normal;color:var(--tulip);display:inline-block;transform:rotate(-2deg)}
+.hero .lead{margin-bottom:26px}
+.btn{display:inline-flex;align-items:center;gap:12px;border:0;border-radius:999px;padding:14px 24px;font-weight:800;
+  background:var(--tulip);color:#2a0615;box-shadow:0 10px 30px rgba(255,92,147,.35);transition:transform .15s}
+.btn:hover{transform:translateY(-2px) rotate(-1deg)}
+.btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.btn svg{width:18px;height:18px;fill:currentColor}
+.hero-bunch{position:absolute;right:0;top:20px;width:min(42%,360px);height:380px;pointer-events:none}
+@media (max-width:760px){.hero-bunch{opacity:.55;width:56%;top:0}}
+
+/* CONTADOR */
+.counter{margin-top:40px;border:1px solid var(--line);border-radius:28px;padding:clamp(18px,3vw,30px);
+  background:linear-gradient(160deg,rgba(255,255,255,.10),rgba(255,255,255,.03));backdrop-filter:blur(8px)}
+.counter .since{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between;align-items:baseline;margin-bottom:16px}
+.counter .since strong{font-family:var(--f-display);font-weight:400;font-size:1.5rem;color:var(--cream)}
+.cells{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.cell{background:rgba(10,8,32,.55);border:1px solid var(--line);border-radius:16px;padding:14px 6px;text-align:center}
+.cell b{display:block;font-family:var(--f-display);font-weight:400;font-size:clamp(1.7rem,5.5vw,3rem);line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+.cell span{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.cell.hot b{color:var(--tulip)}
+@media (max-width:620px){.cells{grid-template-columns:repeat(3,1fr)}}
+.until{margin-top:18px;display:flex;gap:12px;align-items:center;color:var(--cream);font-weight:600}
+.until i{font-style:normal;font-size:1.6rem}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:16px}
+.fact{border-top:1px solid var(--line);padding-top:12px}
+.fact b{display:block;font-family:var(--f-display);font-weight:400;font-size:1.5rem;color:var(--gold);font-variant-numeric:tabular-nums}
+.fact span{font-size:.88rem;color:var(--muted)}
+
+/* FILA DE DINOS */
+.dinorow{display:flex;justify-content:space-between;align-items:flex-end;gap:2px;font-size:clamp(26px,5.4vw,46px);padding-block:8px;overflow:hidden;line-height:1}
+.dinorow span{display:inline-block;animation:hop 1.8s ease-in-out infinite;animation-delay:calc(var(--i)*-.17s)}
+@keyframes hop{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-10px) rotate(4deg)}}
+
+/* CONSTELACIONES */
+.sky-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:center}
+@media (max-width:820px){.sky-grid{grid-template-columns:1fr}}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.tab{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 16px;font-weight:700;font-size:.92rem}
+.tab[aria-selected="true"]{background:var(--gold);color:#2b1a00;border-color:var(--gold)}
+.map{width:100%;max-width:480px;aspect-ratio:1;margin-inline:auto;border-radius:32px;border:1px solid var(--line);
+  background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.07),rgba(10,8,32,.6));display:block}
+.map .ln{stroke:var(--tulip-soft);stroke-width:.5;fill:none;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.6s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.map .st{fill:var(--ink);filter:drop-shadow(0 0 2px var(--gold)) drop-shadow(0 0 6px rgba(255,198,90,.8));cursor:pointer;transition:fill .2s}
+.map g.star:hover .st,.map g.star.on .st{fill:var(--gold)}
+.map g.star:focus-visible{outline:none}
+.map g.star:focus-visible .st{stroke:var(--tulip);stroke-width:.8}
+.map .halo{fill:none;stroke:var(--gold);stroke-width:.3;opacity:0}
+.map g.star.on .halo{opacity:.9;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{r:3.5}50%{r:5.5}}
+.map text{font-family:var(--f-body);font-size:3.3px;fill:var(--cream);font-weight:700;pointer-events:none;paint-order:stroke;stroke:#0a0820;stroke-width:.9px}
+.info h3{font-size:clamp(1.6rem,4vw,2.2rem);color:var(--tulip-soft);margin-bottom:10px}
+.info p{color:var(--muted);margin-bottom:14px}
+.picked{min-height:5.4em;border-left:3px solid var(--gold);padding:4px 0 4px 16px;color:var(--ink)}
+.picked b{display:block;font-family:var(--f-display);font-weight:400;font-size:1.35rem;color:var(--gold)}
+
+/* CARTA */
+.letter-sec{padding-block:clamp(40px,8vw,88px)}
+.paper{position:relative;background:var(--paper);color:var(--paper-ink);border-radius:6px 28px 6px 28px;
+  padding:clamp(26px,6vw,64px) clamp(22px,6vw,72px) clamp(70px,10vw,110px);max-width:760px;margin-inline:auto;
+  box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.4) inset;
+  background-image:repeating-linear-gradient(180deg,transparent 0 33px,rgba(180,140,90,.14) 33px 34px)}
+.paper h3{font-family:var(--f-display);font-size:clamp(1.5rem,4.2vw,2.2rem);color:#a3204f;margin-bottom:26px;line-height:1.15}
+.paper p{font-family:var(--f-letter);font-size:clamp(1.02rem,2.4vw,1.2rem);line-height:1.85;margin-bottom:20px}
+.paper strong{color:#8a1840}
+.paper .hl{background:linear-gradient(transparent 55%,rgba(255,92,147,.38) 55%);padding-inline:2px}
+.paper .sign{font-style:italic;color:#7a3b25;border-top:1px dashed var(--paper-line);padding-top:20px}
+.paper-tulips{position:absolute;left:0;right:0;bottom:0;height:110px;overflow:hidden;pointer-events:none;border-radius:0 0 28px 6px}
+.stamp{position:absolute;top:-18px;right:24px;background:var(--tulip);color:#2a0615;font-family:var(--f-display);padding:8px 16px;border-radius:12px;transform:rotate(4deg);font-size:1rem;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+
+/* SISTEMA SOLAR DE DULCES */
+.system{position:relative;width:min(100%,640px);aspect-ratio:1;margin:30px auto 20px}
+.sun{position:absolute;inset:calc(50% - 8%);width:16%;height:16%;border-radius:50%;display:grid;place-items:center;font-size:clamp(26px,7vw,54px);
+  background:radial-gradient(circle,#ffd98a,#ff9f3d 60%,transparent 72%);box-shadow:0 0 60px 10px rgba(255,170,60,.45);animation:glow 3s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 90px 20px rgba(255,170,60,.6)}}
+.orbit{position:absolute;inset:calc(50% - var(--d)/2);border:1px dashed rgba(255,255,255,.17);border-radius:50%;animation:spin var(--p) linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes unspin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(-360deg)}}
+.planet{position:absolute;top:0;left:50%;transform:translate(-50%,-50%);animation:unspin var(--p) linear infinite;
+  background:none;border:0;padding:0;font-size:var(--s,clamp(15px,3.8vw,26px));line-height:1;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}
+.planet.on{filter:drop-shadow(0 0 10px var(--gold))}
+.planet.ring::after{content:"";position:absolute;left:50%;top:50%;width:190%;height:56%;border:2px solid rgba(255,225,160,.8);border-radius:50%;transform:translate(-50%,-50%) rotate(-18deg);pointer-events:none}
+.planet-info{max-width:640px;margin-inline:auto;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:18px;padding:16px 20px;min-height:5.6em}
+.planet-info b{font-family:var(--f-display);font-weight:400;font-size:1.3rem;color:var(--gold);display:block}
+
+/* MENU */
+.menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.dish{position:relative;border-radius:22px;padding:22px 20px 20px;overflow:hidden;
+  background:linear-gradient(165deg,var(--choco),var(--choco-deep));border:1px solid rgba(255,198,90,.25)}
+.dish::before{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(255,198,90,.35),transparent 70%)}
+.dish .em{font-size:2.6rem;line-height:1;display:block;margin-bottom:12px;position:relative;transition:transform .25s}
+.dish:hover .em{transform:scale(1.15) rotate(-8deg)}
+.dish h3{font-size:1.35rem;color:var(--cream);margin-bottom:6px}
+.dish p{font-size:.93rem;color:#e2cdb6}
+.dish{background:linear-gradient(165deg,var(--g1,#6b3a24),var(--g2,#2b160e))}
+.dish .price{display:inline-block;margin-top:12px;background:rgba(0,0,0,.28);border:1px dashed rgba(255,198,90,.5);border-radius:999px;padding:3px 12px;font-size:.8rem;color:var(--gold);font-weight:800}
+.dish .pair{margin-top:10px;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#f3d9b9;opacity:.85}
+.dish .temp{position:absolute;right:16px;top:16px;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#f3d9b9;opacity:.8}
+.builder{margin-top:44px;border:1px solid var(--line);border-radius:28px;padding:clamp(18px,4vw,34px);background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.02))}
+.builder h3{font-size:clamp(1.5rem,4vw,2.2rem);color:var(--tulip-soft);margin-bottom:6px}
+.builder .lead{margin-bottom:20px}
+.step{margin-bottom:16px}
+.step b{display:block;font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;font-weight:700;font-size:.92rem}
+.chip[aria-pressed="true"]{background:var(--tulip);color:#2a0615;border-color:var(--tulip)}
+.built{margin-top:22px;display:flex;gap:18px;align-items:center;border-radius:20px;padding:18px 20px;background:rgba(10,8,32,.55);border:1px solid var(--line)}
+.built .big{font-size:3.2rem;line-height:1;flex:none;letter-spacing:-.1em}
+.built h4{font-family:var(--f-display);font-weight:400;font-size:clamp(1.3rem,3.6vw,1.9rem);margin:0 0 4px;color:var(--cream)}
+.built p{color:var(--muted);font-size:.95rem}
+.wishbox{margin-top:36px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.wish{flex:1 1 280px;font-family:var(--f-letter);font-style:italic;font-size:1.2rem;color:var(--cream);min-height:3.2em}
+
+/* JARDÍN JURÁSICO */
+.garden-sec{padding-bottom:0}
+.garden{position:relative;height:clamp(360px,60vw,480px);margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));overflow:hidden;cursor:crosshair;
+  --w:1000px;border-bottom:0}
+.garden .moon{position:absolute;right:8%;top:6%;width:clamp(60px,12vw,110px);aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#fffbe8,#f4e3b0 55%,#d9bf7b);box-shadow:0 0 70px rgba(255,240,190,.45)}
+.hill{position:absolute;left:-10%;right:-10%;bottom:-40px;height:150px;border-radius:50% 50% 0 0/100% 100% 0 0;background:linear-gradient(#1b3a2e,#0e2119)}
+.hill.b{bottom:-70px;height:130px;background:linear-gradient(#244a39,#12291f);left:-30%;right:30%}
+.dino{position:absolute;left:0;bottom:var(--b);animation:walk var(--t) linear infinite alternate;animation-delay:var(--d);will-change:transform;z-index:var(--z)}
+.dino .fl{display:block;animation:flip calc(var(--t)*2) step-end infinite;animation-delay:var(--d)}
+.dino .bob{display:block;font-size:var(--s);line-height:1;animation:bob .9s ease-in-out infinite;animation-delay:calc(var(--d)*.37);filter:drop-shadow(0 6px 4px rgba(0,0,0,.4))}
+@keyframes walk{from{transform:translateX(-12vw)}to{transform:translateX(var(--w))}}
+@keyframes flip{0%{transform:scaleX(1)}50%{transform:scaleX(-1)}}
+@keyframes bob{50%{transform:translateY(-6px) rotate(-3deg)}}
+.tulip{position:absolute;bottom:var(--b);width:var(--tw);transform-origin:50% 100%;animation:sway var(--sw) ease-in-out infinite alternate;animation-delay:var(--sd);z-index:var(--z)}
+.tulip svg{display:block;width:100%;height:auto;overflow:visible}
+@keyframes sway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
+.hero-bunch .tulip,.paper-tulips .tulip{z-index:auto}
+.garden-hud{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;margin-bottom:22px}
+.garden-hud .count{font-family:var(--f-display);font-size:1.4rem;color:var(--mint)}
+.final{position:relative;z-index:3;padding-block:36px 8px;text-align:left}
+.final p{font-family:var(--f-display);font-size:clamp(1.5rem,5vw,2.8rem);line-height:1.15;color:var(--cream);max-width:20ch;text-wrap:balance}
+.final small{display:block;margin-top:14px;color:var(--muted)}
+
+/* REPRODUCTOR */
+.player{position:fixed;z-index:50;left:max(12px,env(safe-area-inset-left,0px));right:max(12px,env(safe-area-inset-right,0px));bottom:max(12px,env(safe-area-inset-bottom,0px));
+  max-width:420px;margin-inline:auto 0;display:flex;gap:12px;align-items:center;padding:10px 16px 10px 10px;border-radius:999px;
+  background:rgba(18,13,51,.82);backdrop-filter:blur(12px);border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.player .pb{flex:none;width:44px;height:44px;border-radius:50%;border:0;background:var(--tulip);color:#2a0615;display:grid;place-items:center}
+.player .pb svg{width:18px;height:18px;fill:currentColor}
+.player .meta{min-width:0;flex:1}
+.player .meta b{display:block;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player .meta small{color:var(--muted);font-size:.74rem}
+.bar{height:6px;border-radius:99px;background:rgba(255,255,255,.16);margin-top:5px;cursor:pointer;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--tulip))}
+.player.playing .pb{animation:beat 1.1s ease-in-out infinite}
+@keyframes beat{50%{transform:scale(1.1)}}
+.ic-pause{display:none}.playing .ic-pause{display:block}.playing .ic-play{display:none}
+
+footer{padding-block:0}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important}
+  html{scroll-behavior:auto}
+}
+</style>
+<style>html{margin:0}body{margin:0}</style>
+</head>
+<body>
+
+<canvas id="sky" aria-hidden="true"></canvas>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="tulip" viewBox="0 0 60 150">
+      <path d="M30 70 C29 100 31 125 30 150" stroke="#3fae6a" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <path d="M30 150 C8 128 6 100 18 88 C27 105 31 126 30 150Z" fill="#3fae6a"/>
+      <path d="M30 150 C52 132 56 108 46 96 C36 110 31 128 30 150Z" fill="#2f9459"/>
+      <path d="M30 68 C11 62 5 40 8 15 C20 24 28 42 30 68Z" fill="currentColor"/>
+      <path d="M30 68 C49 62 55 40 52 15 C40 24 32 42 30 68Z" fill="currentColor"/>
+      <path d="M30 4 C18 20 17 50 30 70 C43 50 42 20 30 4Z" fill="currentColor"/>
+      <path d="M30 4 C18 20 17 50 30 70 C43 50 42 20 30 4Z" fill="#fff" fill-opacity=".2"/>
+      <path d="M30 8 C26 26 26 48 30 66" stroke="#000" stroke-opacity=".12" stroke-width="1.4" fill="none"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main>
+  <div class="wrap">
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-bunch" id="bunch" aria-hidden="true"></div>
+      <p class="eyebrow">Desde el 10 · 03 · 2023</p>
+      <h1>Para la <em>cachetoncita</em> más hermosa del universo</h1>
+      <p class="lead">Mi niña preciosa, armé este cielo para ti: con estrellas, planetas, chocolate y más dinosaurios de los que puedas contar. Porque lo que haces cada día merece un universo entero.</p>
+      <button class="btn" id="heroPlay" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        <span>Tocar la canción</span>
+      </button>
+
+      <div class="counter" id="counter">
+        <div class="since">
+          <strong>Llevamos juntos</strong>
+          <span class="eyebrow">10 de marzo de 2023</span>
+        </div>
+        <div class="cells" role="timer" aria-live="off">
+          <div class="cell"><b id="cY">0</b><span>años</span></div>
+          <div class="cell"><b id="cM">0</b><span>meses</span></div>
+          <div class="cell"><b id="cD">0</b><span>días</span></div>
+          <div class="cell"><b id="cH">0</b><span>horas</span></div>
+          <div class="cell"><b id="cMi">0</b><span>minutos</span></div>
+          <div class="cell hot"><b id="cS">0</b><span>segundos</span></div>
+        </div>
+        <p class="until"><i aria-hidden="true">💍</i><span>Y vamos a seguir contando hasta el día en que nos casemos.</span></p>
+        <div class="facts">
+          <div class="fact"><b id="fDays">0</b><span>días en total, uno por uno</span></div>
+          <div class="fact"><b id="fKm">0</b><span>km que la Tierra nos llevó alrededor del Sol</span></div>
+          <div class="fact"><b id="fMoons">0</b><span>lunas llenas vistas desde el mismo cielo</span></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="dinorow" data-dinos="🦖🦕🦖🦕🦕🦖🦕🦖🦕🦖🦕🦕" aria-hidden="true"></div>
+
+    <!-- CONSTELACIONES -->
+    <section id="cielo">
+      <div class="sec-head">
+        <p class="eyebrow">Cielo de nosotros</p>
+        <h2>Una constelación con tu nombre en cada estrella</h2>
+        <p class="lead">La primera no existe en ningún mapa: la dibujé yo, con forma de tulipán, con siete estrellas por lo que más admiro de ti. Las otras tres son reales y se ven desde Paraguay.</p>
+      </div>
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div class="sky-grid">
+        <svg class="map" id="map" viewBox="0 0 100 100" role="img" aria-label="Mapa de constelación"></svg>
+        <div class="info">
+          <h3 id="cName"></h3>
+          <p id="cBlurb"></p>
+          <div class="picked" id="picked" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="dinorow" data-dinos="🦕🦖🦕🦕🦖🦕🦖🦕🦕🦖🦕🦖" aria-hidden="true"></div>
+
+    <!-- CARTA -->
+    <section class="letter-sec" id="carta">
+      <div class="sec-head">
+        <p class="eyebrow">Lo más importante</p>
+        <h2>Una carta, escrita despacio</h2>
+      </div>
+      <article class="paper">
+        <div class="stamp">con todo mi amor</div>
+        <h3>💗 Para mi niña hermosa, mi orgullo más grande y mi amor para toda la vida 💗</h3>
+        <p>Mi amor, mi niña preciosa, hoy quiero que te tomes un momento para leer estas palabras con el corazón, porque hay tantas cosas que siento por ti que a veces las palabras parecen quedarse pequeñas para expresar todo lo que llevo dentro. Quiero que sepas lo mucho que te admiro, lo orgulloso que estoy de ti y lo feliz que me hace tener a una chica tan maravillosa como tú en mi vida. 🥹❤️</p>
+        <p>¿Sabes qué es lo que más admiro de ti, mi amor? No es solamente tu belleza, esa carita hermosa que me enamora cada día más, ni esa sonrisa que puede alegrarme incluso en mis días más difíciles. Es tu manera de seguir adelante, tu esfuerzo, tus ganas de superarte y esa capacidad que tienes de continuar luchando por tus sueños, incluso cuando estás cansada. Eres una chica <span class="hl">trabajadora</span>, dedicada y especial, una persona que no necesita ser perfecta para demostrar lo increíble que es.</p>
+        <p><strong>Mi niña, tú eres única e inigualable.</strong> Y no te lo digo solamente porque seas mi novia, te lo digo porque realmente veo en ti algo que me hace admirarte muchísimo. Veo a una chica que se esfuerza por sus estudios, que intenta cumplir con sus responsabilidades y que está construyendo poco a poco su futuro. Quizás tú no siempre notes todo lo que haces, quizás algunos días sientas que no avanzas lo suficiente, pero yo quiero que sepas que cada esfuerzo tuyo importa. Cada tarea, cada examen, cada noche de estudio y cada dificultad que superas forman parte de la gran persona en la que te estás convirtiendo.</p>
+        <p>Mi amor, estoy tan orgulloso de tus estudios que quisiera que pudieras verte por un instante a través de mis ojos. Quisiera que pudieras sentir la admiración que siento cuando pienso en todo lo que has conseguido y en todo lo que todavía puedes conseguir. Quisiera que entendieras que para mí no eres solamente una chica hermosa, sino una mujer con muchísimo potencial, con sueños preciosos y con una fuerza que merece ser reconocida. Y aunque todavía te falten muchas cosas por aprender y vivir, quiero que nunca dejes de confiar en ti misma. ❤️‍🩹</p>
+        <p>Y pensar que ya estamos por terminar el colegio, mi vida… 🥹🎓 ¿Te das cuenta de lo cerca que estamos de cerrar esta etapa? Parece que fue ayer cuando todavía nos quedaba tanto camino por recorrer, y ahora estamos aquí, a punto de terminar una parte tan importante de nuestras vidas. Pronto dejaremos atrás las clases, las tareas, los exámenes, las preocupaciones y todos esos días que, aunque a veces parecían interminables, algún día recordaremos con nostalgia.</p>
+        <p>Y entre todos esos recuerdos, yo espero que tú puedas recordar cuánto te esforzaste, cuántas veces seguiste adelante y cuántas cosas lograste incluso cuando no era fácil. Quiero que, cuando llegue el día de nuestra graduación, levantes la cabeza, sonrías y sientas orgullo de la chica que eres. Porque habrás llegado hasta allí con tu esfuerzo, tu dedicación y todas esas pequeñas batallas que nadie más conoce.</p>
+        <p>Mi cachetoncita hermosa, si alguna vez te sientes insuficiente, quiero que vuelvas a leer esta carta. Si alguna vez una mala nota te hace pensar que no eres capaz, recuerda que una nota no define tu inteligencia ni tu valor. Si algún día te sientes cansada de estudiar, recuerda que descansar no significa rendirse. Y si alguna vez sientes miedo por lo que viene después del colegio, quiero que recuerdes que no necesitas tener toda tu vida resuelta ahora mismo. Puedes ir paso a paso, aprendiendo, creciendo y descubriendo lo que realmente deseas para tu futuro.</p>
+        <p>No quiero que te exijas tanto que olvides cuidar de ti misma, mi amor. Quiero que también disfrutes, que sonrías, que descanses y que celebres cada pequeño logro. Porque tú mereces mucho más que alcanzar metas: mereces sentirte feliz mientras las alcanzas. Mereces que te reconozcan el esfuerzo, que te abracen cuando estés cansada y que te recuerden que eres valiosa incluso en tus días más difíciles.</p>
+        <p>Y si me preguntas quién quiero ser en esos momentos, quiero ser esa persona que te recuerde que puedes continuar cuando te falten fuerzas, que te escuche cuando necesites desahogarte y que celebre contigo cada paso que des. No porque tengas que depender de mí para creer en ti, sino porque quiero acompañarte mientras descubres por ti misma lo maravillosa que eres.</p>
+        <p>Mi niña, no sé exactamente qué nos espera después de terminar el colegio. Tal vez vengan nuevos desafíos, nuevos sueños, responsabilidades y caminos que todavía no conocemos. Pero hay algo que deseo de corazón: que nunca pierdas esa esencia tan bonita que te hace ser tú. Que sigas siendo esa chica <span class="hl">trabajadora</span>, dulce, fuerte y única. Que nunca abandones tus sueños por miedo y que jamás permitas que alguien te haga creer que eres menos de lo que realmente vales.</p>
+        <p>Quiero que algún día mires todo lo que has conseguido y puedas decirte: <em>«Lo logré. A pesar de los días difíciles, a pesar del cansancio y de las dudas, seguí adelante»</em>. Y quiero estar ahí para verte sonreír, abrazarte con todas mis fuerzas y decirte lo orgulloso que estoy de ti. Porque, mi amor, verte crecer y luchar por tu futuro es una de las cosas más bonitas que puedo presenciar. 🫶🏻</p>
+        <p>Gracias por ser tú, mi vida. Gracias por existir, por compartir conmigo tus días y por permitirme conocer a esa chica tan especial que hay detrás de esa hermosa sonrisa. A veces quizás no encuentre las palabras perfectas para demostrarte cuánto te admiro, pero quiero que nunca tengas que dudar de lo importante que eres para mí.</p>
+        <p><strong>Si pudiera pedirle algo al universo, le pediría que nunca te falten motivos para sonreír, fuerzas para perseguir tus sueños y amor para recordar lo valiosa que eres.</strong> 🌙✨ Porque así como las estrellas siguen brillando incluso en la inmensidad de la noche, tú también puedes encontrar tu luz en los momentos difíciles. Y aunque el camino a veces parezca largo, tienes derecho a avanzar a tu propio ritmo.</p>
+        <p>Mi amor, estoy orgulloso de ti por tus estudios, por tu esfuerzo y por cada pequeño paso que te acerca a tus metas. Estoy orgulloso de la chica que eres hoy y emocionado por la mujer en la que te convertirás mañana. Y cuando por fin terminemos el colegio, quiero que recuerdes que ese logro será tuyo, fruto de tu dedicación y de todo lo que has dado para llegar hasta allí.</p>
+        <p>Nunca olvides esto, mi cachetoncita: no necesitas ser la mejor en todo para ser extraordinaria. Para mí ya eres alguien muy especial. No tienes que demostrar tu valor cada día, porque tu valor no depende de tus resultados. Eres mucho más que tus calificaciones, mucho más que tus errores y mucho más que cualquier dificultad que puedas encontrar.</p>
+        <p><strong>Te amo por quien eres, admiro todo lo que haces y me siento profundamente orgulloso de ti.</strong> ❤️</p>
+        <p>Y si algún día la vida se pone difícil, recuerda que terminar el colegio es solamente el comienzo de una historia mucho más grande. Todavía tienes muchos sueños por cumplir, lugares por conocer, experiencias por vivir y motivos para sentirte orgullosa de ti misma.</p>
+        <p>Quiero verte triunfar, mi niña hermosa. Quiero verte alcanzar tus metas, cumplir tus sueños y convertirte en esa persona que tanto deseas ser. Y quiero que, cuando recuerdes esta etapa de nuestras vidas, puedas sonreír sabiendo que hubo alguien que siempre vio algo maravilloso en ti y que se sintió feliz de verte luchar por tu futuro.</p>
+        <p>Esa persona soy yo, mi amor. Y hoy, mañana y cada vez que necesites escucharlo, quiero recordarte lo mismo:</p>
+        <p><strong>Estoy orgulloso de ti. Estoy orgulloso de tu esfuerzo. Estoy orgulloso de tus estudios. Estoy orgulloso de la chica <span class="hl">trabajadora</span>, única e inigualable que eres. Y estoy muy feliz de poder amarte mientras seguimos creciendo y avanzando en nuestras vidas.</strong> 🥹💗</p>
+        <p>Te amo muchísimo, mi niña preciosa. Nunca dejes de creer en ti, porque tienes un mundo entero de posibilidades por delante. Y cuando llegue el momento de cerrar las puertas del colegio, no tengas miedo de mirar hacia adelante: lo mejor de tu historia todavía está por escribirse.</p>
+        <p class="sign">Con todo mi amor, para mi novia hermosa, mi orgullo más grande y esa personita que hace que mi mundo sea mucho más bonito. 💗🎓❤️</p>
+        <div class="paper-tulips" id="paperTulips" aria-hidden="true"></div>
+      </article>
+    </section>
+
+    <!-- SISTEMA SOLAR DE DULCES -->
+    <section id="planetas">
+      <div class="sec-head">
+        <p class="eyebrow">Universo y gastronomía</p>
+        <h2>Un sistema solar hecho de dulces</h2>
+        <p class="lead">Cada planeta es un postre. Toca uno para saber cuánto tarda en dar la vuelta al Sol y cuántas vueltas la Tierra lleva dadas con nosotros encima.</p>
+      </div>
+      <div class="system" id="system">
+        <div class="sun" aria-hidden="true">🍯</div>
+      </div>
+      <div class="planet-info" id="pInfo" aria-live="polite"></div>
+    </section>
+
+    <!-- MENU -->
+    <section id="menu">
+      <div class="sec-head">
+        <p class="eyebrow">Carta de postres</p>
+        <h2>El menú del cosmos</h2>
+        <p class="lead">Chocolate, dulce de leche, frutillas y todo lo que se pueda derretir. Para pedir uno, solo tienes que decirme.</p>
+      </div>
+      <div class="menu" id="menuGrid"></div>
+      <div class="builder">
+        <h3>Arma tu postre de otro mundo</h3>
+        <p class="lead">Elige una base, un baño y un toque cósmico. El universo le pone nombre.</p>
+        <div class="step"><b>1 · La base</b><div class="chips" id="chBase"></div></div>
+        <div class="step"><b>2 · El baño</b><div class="chips" id="chBano"></div></div>
+        <div class="step"><b>3 · El toque cósmico</b><div class="chips" id="chTop"></div></div>
+        <div class="built" aria-live="polite"><div class="big" id="bBig"></div><div><h4 id="bName"></h4><p id="bDesc"></p></div></div>
+      </div>
+      <div class="wishbox">
+        <button class="btn" id="wishBtn" type="button">Pedir un deseo</button>
+        <button class="btn ghost" id="rainBtn" type="button">Llover chocolate</button>
+        <p class="wish" id="wish" aria-live="polite">Toca el botón y una estrella fugaz te lo concede.</p>
+      </div>
+    </section>
+
+    <!-- JARDÍN -->
+    <section class="garden-sec" id="jardin">
+      <div class="garden-hud">
+        <div>
+          <p class="eyebrow">Jardín jurásico</p>
+          <h2>Tulipanes y dinosaurios</h2>
+        </div>
+        <div class="count">Dinosaurios: <span id="dinoCount">0</span></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="garden" id="garden" aria-label="Jardín con tulipanes y dinosaurios. Toca para sumar más dinosaurios.">
+    <div class="moon" aria-hidden="true"></div>
+    <div class="hill b" aria-hidden="true"></div>
+    <div class="hill" aria-hidden="true"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="final">
+      <p>Estoy orgulloso de ti, de tu esfuerzo y de mi cachetoncita hermosa.</p>
+      <small>Toca el jardín para sumar dinosaurios. Y si necesitas leerlo otra vez, la carta está arriba.</small>
+    </div>
+  </div>
+</footer>
+
+<div class="player" id="player">
+  <button class="pb" id="pb" type="button" aria-label="Reproducir o pausar la canción">
+    <svg class="ic-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    <svg class="ic-pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+  </button>
+  <div class="meta">
+    <b>Feel It · d4vd</b>
+    <small id="time">0:00</small>
+    <div class="bar" id="bar" role="slider" aria-label="Progreso de la canción" tabindex="0"><i id="prog"></i></div>
+  </div>
+</div>
+<audio id="song" loop preload="auto" src="song.mp3"></audio>
+
+<script>
+(function(){
+'use strict';
+var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function $(id){return document.getElementById(id)}
+function rnd(a,b){return a+Math.random()*(b-a)}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+
+/* ---------- CONTADOR ---------- */
+var START = new Date(2023,2,10,0,0,0);
+function addMonths(d,m){return new Date(d.getFullYear(),d.getMonth()+m,d.getDate(),0,0,0)}
+function elapsed(now){
+  var m=(now.getFullYear()-START.getFullYear())*12+(now.getMonth()-START.getMonth());
+  var anchor=addMonths(START,m);
+  if(anchor>now){m--;anchor=addMonths(START,m)}
+  var rest=now-anchor;
+  var days=Math.floor(rest/864e5); rest-=days*864e5;
+  var h=Math.floor(rest/36e5); rest-=h*36e5;
+  var mi=Math.floor(rest/6e4); rest-=mi*6e4;
+  return {y:Math.floor(m/12),mo:m%12,d:days,h:h,mi:mi,s:Math.floor(rest/1000)};
+}
+var nf = new Intl.NumberFormat('es');
+function tick(){
+  var now=new Date(), e=elapsed(now), ms=now-START, secs=ms/1000;
+  $('cY').textContent=e.y; $('cM').textContent=e.mo; $('cD').textContent=e.d;
+  $('cH').textContent=e.h; $('cMi').textContent=String(e.mi).padStart(2,'0'); $('cS').textContent=String(e.s).padStart(2,'0');
+  var days=Math.floor(ms/864e5);
+  $('fDays').textContent=nf.format(days);
+  $('fKm').textContent=nf.format(Math.floor(secs*29.78));
+  $('fMoons').textContent=nf.format(Math.floor(days/29.53));
+  window.__orbits = ms/864e5/365.2422;
+}
+tick(); setInterval(tick,1000);
+
+/* ---------- CIELO DE FONDO ---------- */
+var sky=$('sky'), sctx=sky.getContext('2d'), stars=[], dpr=Math.min(window.devicePixelRatio||1,2), W=0,H=0, shoot=null, nextShoot=performance.now()+3500;
+function sizeCanvas(c){W=window.innerWidth;H=window.innerHeight;c.width=W*dpr;c.height=H*dpr}
+function makeStars(){
+  sizeCanvas(sky); sizeCanvas($('fx'));
+  var n=Math.round(Math.min(320,W*H/5200)); stars=[];
+  for(var i=0;i<n;i++) stars.push({x:Math.random()*W,y:Math.random()*H*1.4,r:rnd(.3,1.7),p:Math.random()*6.28,s:rnd(.6,2.2),z:rnd(.02,.25),c:pick(['#fff6dc','#ffe0f0','#d6e4ff','#ffe9b0'])});
+}
+function drawSky(t){
+  sctx.setTransform(dpr,0,0,dpr,0,0); sctx.clearRect(0,0,W,H);
+  var sy=window.scrollY||0;
+  for(var i=0;i<stars.length;i++){
+    var s=stars[i], y=((s.y-sy*s.z)%(H*1.4)+H*1.4)%(H*1.4); if(y>H) continue;
+    var a=reduce?.8:.45+.55*Math.abs(Math.sin(t/1000*s.s+s.p));
+    sctx.globalAlpha=a; sctx.fillStyle=s.c; sctx.beginPath(); sctx.arc(s.x,y,s.r,0,6.283); sctx.fill();
+  }
+  sctx.globalAlpha=1;
+  if(!reduce){
+    if(!shoot && t>nextShoot){shoot={x:rnd(W*.2,W),y:rnd(0,H*.4),vx:-rnd(7,11),vy:rnd(3,6),l:0};nextShoot=t+rnd(4500,9000)}
+    if(shoot){
+      var g=sctx.createLinearGradient(shoot.x,shoot.y,shoot.x-shoot.vx*9,shoot.y-shoot.vy*9);
+      g.addColorStop(0,'rgba(255,246,220,.95)'); g.addColorStop(1,'rgba(255,246,220,0)');
+      sctx.strokeStyle=g; sctx.lineWidth=2; sctx.beginPath(); sctx.moveTo(shoot.x,shoot.y); sctx.lineTo(shoot.x-shoot.vx*9,shoot.y-shoot.vy*9); sctx.stroke();
+      shoot.x+=shoot.vx; shoot.y+=shoot.vy; shoot.l++;
+      if(shoot.l>70||shoot.x<-80||shoot.y>H+80) shoot=null;
+    }
+  }
+}
+function loop(t){drawSky(t); if(!document.hidden) requestAnimationFrame(loop); else document.addEventListener('visibilitychange',function f(){document.removeEventListener('visibilitychange',f);requestAnimationFrame(loop)})}
+makeStars(); requestAnimationFrame(loop);
+window.addEventListener('resize',function(){makeStars();layoutGarden()});
+
+/* ---------- EFECTOS: lluvia de dulces y estrella fugaz ---------- */
+var fx=$('fx'), fctx=fx.getContext('2d'), parts=[], fxOn=false;
+function rain(list,count){
+  for(var i=0;i<count;i++) parts.push({e:pick(list),x:rnd(0,W),y:rnd(-H*.7,-20),vy:rnd(2.2,5),vx:rnd(-.6,.6),r:rnd(0,6.28),vr:rnd(-.05,.05),s:rnd(20,38)});
+  if(!fxOn){fxOn=true;requestAnimationFrame(fxLoop)}
+}
+function fxLoop(){
+  fctx.setTransform(dpr,0,0,dpr,0,0); fctx.clearRect(0,0,W,H);
+  parts=parts.filter(function(p){return p.y<H+50});
+  parts.forEach(function(p){
+    p.y+=p.vy; p.x+=p.vx; p.r+=p.vr;
+    fctx.save(); fctx.translate(p.x,p.y); fctx.rotate(p.r); fctx.font=p.s+'px serif'; fctx.textAlign='center'; fctx.textBaseline='middle'; fctx.fillText(p.e,0,0); fctx.restore();
+  });
+  if(parts.length) requestAnimationFrame(fxLoop); else {fxOn=false; fctx.clearRect(0,0,W,H)}
+}
+
+/* ---------- TULIPANES ---------- */
+var COLORS=['#ff5c93','#ff8fb8','#ffc65a','#ff7a45','#e63e6d','#fff1c9','#c77dff','#ff4d6d'];
+function tulipEl(o){
+  var d=document.createElement('div'); d.className='tulip';
+  d.style.cssText='--b:'+o.b+'px;--tw:'+o.w+'px;--sw:'+o.sw+'s;--sd:'+o.sd+'s;--z:'+(o.z||1)+';left:'+o.x+'%;color:'+o.c;
+  d.innerHTML='<svg viewBox="0 0 60 150" aria-hidden="true"><use href="#tulip"/></svg>';
+  return d;
+}
+function fillTulips(host,n,minW,maxW,zBase){
+  for(var i=0;i<n;i++){
+    var w=rnd(minW,maxW);
+    host.appendChild(tulipEl({x:(i+Math.random()*.8)*(100/n),b:rnd(-8,10),w:w,sw:rnd(2.2,4.2),sd:-rnd(0,4),c:pick(COLORS),z:zBase}));
+  }
+}
+fillTulips($('bunch'),7,52,86,1);
+fillTulips($('paperTulips'),14,40,64,1);
+
+/* ---------- DINOSAURIOS ---------- */
+document.querySelectorAll('.dinorow').forEach(function(r){
+  Array.from(r.dataset.dinos).forEach(function(ch,i){var s=document.createElement('span');s.textContent=ch;s.style.setProperty('--i',i);r.appendChild(s)});
+});
+var garden=$('garden'), dinoN=0;
+function layoutGarden(){garden.style.setProperty('--w',(garden.clientWidth+80)+'px')}
+function addDino(yFrac){
+  if(dinoN>=140) return;
+  var gh=garden.clientHeight, b=yFrac==null?rnd(36,gh*.5):Math.max(30,Math.min(gh*.55,gh*(1-yFrac)-40));
+  var size=Math.round(rnd(44,104)*(1-b/(gh*1.6)));
+  var d=document.createElement('div'); d.className='dino';
+  d.style.cssText='--b:'+b+'px;--t:'+rnd(16,46).toFixed(1)+'s;--d:-'+rnd(0,40).toFixed(1)+'s;--s:'+size+'px;--z:'+(10+Math.round(100-b));
+  d.innerHTML='<span class="fl"><span class="bob">'+(Math.random()<.45?'🦖':'🦕')+'</span></span>';
+  garden.appendChild(d); dinoN++; $('dinoCount').textContent=dinoN;
+}
+layoutGarden();
+for(var i=0;i<36;i++) addDino();
+var TS=Math.min(1,window.innerWidth/900);
+fillTulips(garden,22,30*TS,52*TS,5);
+(function(){ // fila delantera, más grande
+  var n=12; for(var i=0;i<n;i++){ garden.appendChild(tulipEl({x:(i+Math.random()*.7)*(100/n),b:-62*TS-8,w:rnd(56,84)*TS,sw:rnd(2.4,4.4),sd:-rnd(0,4),c:pick(COLORS),z:200})); }
+})();
+garden.addEventListener('pointerdown',function(e){
+  var r=garden.getBoundingClientRect(); addDino((e.clientY-r.top)/r.height); addDino();
+});
+
+/* ---------- CONSTELACIONES ---------- */
+var SKY={
+ tulip:{tab:'La Cachetoncita',name:'La Cachetoncita',
+  blurb:'Esta constelación no está en ningún mapa. La dibujé con forma de tulipán y le puse siete estrellas, una por cada cosa que admiro de ti. Toca cada una.',
+  stars:[
+   {x:50,y:12,r:2.4,n:'Esfuerzo',m:'Cada tarea, cada examen y cada noche de estudio importa. Todo suma a la persona en la que te estás convirtiendo.'},
+   {x:27,y:24,r:2,n:'Dedicación',m:'Sigues luchando por tus sueños incluso cuando estás cansada. Eso se nota y yo lo veo.'},
+   {x:73,y:24,r:2,n:'Constancia',m:'Vas paso a paso y a tu propio ritmo. Avanzar así también es llegar.'},
+   {x:33,y:50,r:2,n:'Fuerza',m:'Das batallas pequeñas que nadie más conoce, y las ganas una por una.'},
+   {x:67,y:50,r:2,n:'Dulzura',m:'Tu sonrisa me alegra incluso en mis días más difíciles.'},
+   {x:50,y:62,r:2.4,n:'Valentía',m:'No necesitas tener toda la vida resuelta para ser valiente. Ya lo eres.'},
+   {x:50,y:92,r:2.8,n:'Luz',m:'Como las estrellas, brillas incluso en la noche más grande.'}],
+  lines:[[1,0],[0,2],[2,4],[4,5],[5,3],[3,1],[5,6]]},
+ crux:{tab:'Cruz del Sur',name:'Cruz del Sur',
+  blurb:'Es la constelación más pequeña del cielo y la más famosa del hemisferio sur. Desde Paraguay se ve durante todo el año, y su brazo largo apunta casi hacia el polo sur celeste.',
+  stars:[{x:50,y:12,r:2.4,n:'Gacrux'},{x:50,y:88,r:3,n:'Acrux'},{x:74,y:46,r:2.6,n:'Mimosa'},{x:28,y:40,r:2.2,n:'Delta Crucis'},{x:40,y:64,r:1.4,n:'Épsilon Crucis'}],
+  lines:[[0,1],[2,3]]},
+ orion:{tab:'Orión',name:'Orión, el cazador',
+  blurb:'Las Tres Marías son su cinturón. Betelgeuse es una supergigante roja y Rigel una supergigante azul. En el verano se ve temprano en la noche.',
+  stars:[{x:30,y:14,r:3,n:'Betelgeuse'},{x:68,y:18,r:2.4,n:'Bellatrix'},{x:42,y:52,r:2.3,n:'Alnitak'},{x:50,y:50,r:2.3,n:'Alnilam'},{x:58,y:48,r:2.3,n:'Mintaka'},{x:36,y:86,r:2.2,n:'Saiph'},{x:70,y:82,r:3.1,n:'Rigel'}],
+  lines:[[0,1],[0,2],[1,4],[2,3],[3,4],[2,5],[4,6]]},
+ scorpio:{tab:'Escorpio',name:'Escorpio',
+  blurb:'Su corazón es Antares, una supergigante roja cientos de veces más ancha que el Sol. Domina el cielo de las noches de invierno, con su cola curvada hacia el horizonte.',
+  stars:[{x:72,y:10,r:1.8,n:'Graffias'},{x:60,y:18,r:2,n:'Dschubba'},{x:68,y:26,r:1.5,n:'Pi Scorpii'},{x:52,y:30,r:1.8,n:'Sigma Scorpii'},{x:44,y:40,r:3.2,n:'Antares'},{x:42,y:52,r:1.7,n:'Tau Scorpii'},{x:38,y:62,r:1.7,n:'Épsilon Scorpii'},{x:40,y:74,r:1.6,n:'Zeta Scorpii'},{x:50,y:82,r:1.7,n:'Eta Scorpii'},{x:62,y:86,r:2.1,n:'Sargas'},{x:74,y:82,r:1.6,n:'Iota Scorpii'},{x:80,y:72,r:1.8,n:'Kappa Scorpii'},{x:76,y:62,r:2.4,n:'Shaula'},{x:84,y:64,r:1.8,n:'Lesath'}],
+  lines:[[0,1],[2,1],[1,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10],[10,11],[11,12],[11,13]]}
+};
+var NS='http://www.w3.org/2000/svg', mapEl=$('map'), tabsEl=$('tabs'), current='tulip';
+function svg(tag,attrs,txt){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(txt)e.textContent=txt;return e}
+function showPick(c,i){
+  var s=c.stars[i], box=$('picked');
+  mapEl.querySelectorAll('g.star').forEach(function(g,j){g.classList.toggle('on',j===i)});
+  box.innerHTML=''; var b=document.createElement('b'); b.textContent=s.n; box.appendChild(b);
+  box.appendChild(document.createTextNode(s.m||('Una de las estrellas de '+c.name+'.')));
+}
+function drawSky2(key){
+  current=key; var c=SKY[key];
+  tabsEl.querySelectorAll('.tab').forEach(function(t){t.setAttribute('aria-selected',t.dataset.k===key)});
+  $('cName').textContent=c.name; $('cBlurb').textContent=c.blurb;
+  mapEl.innerHTML='';
+  for(var i=0;i<46;i++) mapEl.appendChild(svg('circle',{cx:rnd(2,98).toFixed(1),cy:rnd(2,98).toFixed(1),r:rnd(.15,.45).toFixed(2),fill:'#fff6dc','fill-opacity':rnd(.3,.8).toFixed(2)}));
+  c.lines.forEach(function(l,i){
+    var a=c.stars[l[0]], b=c.stars[l[1]];
+    var p=svg('path',{d:'M'+a.x+' '+a.y+'L'+b.x+' '+b.y,class:'ln',pathLength:'1'}); p.style.animationDelay=(i*.18)+'s'; mapEl.appendChild(p);
+  });
+  c.stars.forEach(function(s,i){
+    var g=svg('g',{class:'star',tabindex:'0',role:'button','aria-label':s.n});
+    g.appendChild(svg('circle',{cx:s.x,cy:s.y,r:3.5,class:'halo'}));
+    g.appendChild(svg('circle',{cx:s.x,cy:s.y,r:s.r,class:'st'}));
+    g.appendChild(svg('circle',{cx:s.x,cy:s.y,r:Math.max(5,s.r+2.5),fill:'transparent'}));
+    var right=s.x<62; g.appendChild(svg('text',{x:right?s.x+s.r+1.8:s.x-s.r-1.8,y:s.y+1.2,'text-anchor':right?'start':'end'},s.n));
+    g.addEventListener('click',function(){showPick(c,i)});
+    g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();showPick(c,i)}});
+    mapEl.appendChild(g);
+  });
+  showPick(c,key==='tulip'?0:c.stars.findIndex(function(s){return s.n==='Antares'||s.n==='Rigel'||s.n==='Acrux'}));
+}
+Object.keys(SKY).forEach(function(k){
+  var b=document.createElement('button'); b.className='tab'; b.type='button'; b.dataset.k=k; b.setAttribute('role','tab'); b.textContent=SKY[k].tab;
+  b.addEventListener('click',function(){drawSky2(k)}); tabsEl.appendChild(b);
+});
+drawSky2('tulip');
+
+/* ---------- SISTEMA SOLAR ---------- */
+var PLANETS=[
+ {n:'Mercurio',e:'🍬',sw:'bombón',d:24,p:6,t:'da una vuelta al Sol cada 88 días, la más rápida de todas.'},
+ {n:'Venus',e:'🍭',sw:'chupetín',d:34,p:9,t:'tarda 225 días en rodear al Sol y gira al revés que casi todos los demás.'},
+ {n:'Tierra',e:'🌍',sw:'nuestro hogar',d:44,p:12,t:'tarda 365,25 días en dar la vuelta. Es el único lugar donde te encontré.',earth:true},
+ {n:'Marte',e:'🍓',sw:'frutilla con chocolate',d:54,p:16,t:'tarda 687 días en dar la vuelta al Sol, casi dos años terrestres.'},
+ {n:'Júpiter',e:'🍩',sw:'dona glaseada',d:67,p:24,s:'clamp(22px,6vw,40px)',t:'es tan grande que cabrían más de mil Tierras adentro. Tarda casi 12 años en rodear al Sol.'},
+ {n:'Saturno',e:'🍪',sw:'galleta con anillo de azúcar',d:79,p:32,ring:1,s:'clamp(20px,5.2vw,34px)',t:'tarda unos 29 años en dar la vuelta y sus anillos son de hielo y roca.'},
+ {n:'Urano',e:'🫐',sw:'arándano',d:89,p:42,t:'gira casi acostado y tarda 84 años en rodear al Sol.'},
+ {n:'Neptuno',e:'🍇',sw:'uva',d:98,p:54,t:'es el más lejano: una vuelta al Sol le lleva unos 165 años.'}
+];
+var sys=$('system');
+function showPlanet(p,btn){
+  sys.querySelectorAll('.planet').forEach(function(x){x.classList.toggle('on',x===btn)});
+  var extra=p.earth?' Desde el 10 de marzo de 2023 ya dimos '+(window.__orbits||0).toFixed(2).replace('.',',')+' vueltas juntos.':'';
+  $('pInfo').innerHTML='<b></b><span></span>';
+  $('pInfo').firstChild.textContent=p.n+' · '+p.sw;
+  $('pInfo').lastChild.textContent=p.n+' '+p.t+extra;
+}
+PLANETS.forEach(function(p){
+  var o=document.createElement('div'); o.className='orbit'; o.style.cssText='--d:'+p.d+'%;--p:'+p.p+'s;';
+  var b=document.createElement('button'); b.className='planet'+(p.ring?' ring':''); b.type='button'; b.textContent=p.e; b.setAttribute('aria-label',p.n+', '+p.sw);
+  b.style.cssText='--p:'+p.p+'s;'+(p.s?'--s:'+p.s+';':'');
+  b.addEventListener('click',function(){showPlanet(p,b)}); o.appendChild(b); sys.appendChild(o);
+});
+showPlanet(PLANETS[2],sys.querySelectorAll('.planet')[2]);
+
+/* ---------- MENÚ ---------- */
+var DISHES=[
+ ['🍫','Nebulosa de Cacao','Mousse de chocolate amargo con un velo de cacao en polvo, servido tibio para que flote como gas estelar.','2 abrazos largos','Maridaje: Orión','nebulosa tibia','#7a3b2a','#2a130d'],
+ ['🌋','Agujero Negro con Sorpresa','Volcán de chocolate con corazón líquido. Todo lo que entra con la cuchara ya no vuelve.','1 beso por cucharada','Maridaje: Escorpio','caliente, cuidado','#3b1a3d','#0f0818'],
+ ['🌙','Luna Nueva de Alfajor','Dos tapas de masa suave, dulce de leche espeso y coco rallado en el borde, como polvo lunar.','3 besos en la frente','Maridaje: luna creciente','temperatura ambiente','#8a5a2a','#2c1a0c'],
+ ['☄️','Cometa de Frutilla','Frutilla gigante bañada en chocolate negro, con una cola de crema batida que se derrite al viajar.','1 carrera hasta la mesa','Maridaje: Cruz del Sur','fría','#7d1f3a','#220811'],
+ ['🪐','Saturno con Anillos','Dona glaseada rodeada por un anillo de azúcar crocante y chispas que giran en el plato.','1 baile en la cocina','Maridaje: un domingo','tibia','#8a6a2a','#2a1d08'],
+ ['🌌','Vía Láctea Líquida','Flan de dulce de leche con una espiral de caramelo y chocolate blanco rallado como estrellas.','1 película juntos','Maridaje: noche despejada','fría','#3a3470','#120f33'],
+ ['💥','Supernova de Brownie','Brownie recién salido del horno, helado de crema encima y salsa de chocolate que explota al servir.','1 abrazo que dure 10 segundos','Maridaje: Betelgeuse','caliente y frío a la vez','#5a2a1c','#1d0d08'],
+ ['✨','Lluvia de Estrellas Fugaces','Bombones, confites y pedacitos de turrón para comer de a puñados mirando el cielo.','1 deseo en voz baja','Maridaje: Perseidas','como tú quieras','#2f5a5a','#0c1e23'],
+ ['🦖','Huevo de Dinosaurio','Un huevo de chocolate con cáscara que se rompe a cucharazos y adentro, una trufa de dulce de leche.','1 rugido de T. rex','Maridaje: el Jurásico','roca sólida, centro blando','#3d5a2a','#101d0b']
+];
+var grid=$('menuGrid');
+DISHES.forEach(function(d){
+  var a=document.createElement('article'); a.className='dish'; a.style.setProperty('--g1',d[6]); a.style.setProperty('--g2',d[7]);
+  a.innerHTML='<span class="temp"></span><span class="em" aria-hidden="true"></span><h3></h3><p></p><span class="price"></span><div class="pair"></div>';
+  var c=a.children; c[0].textContent=d[5]; c[1].textContent=d[0]; c[2].textContent=d[1]; c[3].textContent=d[2]; c[4].textContent='Precio: '+d[3]; c[5].textContent=d[4];
+  grid.appendChild(a);
+});
+/* constructor de postres */
+var BASES=[['🍫','Brownie'],['🍪','Alfajor'],['🍮','Flan'],['🍩','Dona'],['🍓','Frutillas'],['🍨','Helado']];
+var BANOS=[['chocolate amargo','🍫'],['dulce de leche','🍯'],['chocolate blanco','🤍'],['caramelo','🧈']];
+var TOPS=[['anillos de Saturno','chispas de colores en espiral','💫'],['lluvia de estrellas','confites y bombones','✨'],['cola de cometa','crema batida y frutilla','☄️'],['polvo de luna','coco rallado y cacao','🌙'],['mini dinosaurios','galletitas con forma de dino','🦕']];
+var sel={b:0,s:0,t:0};
+function chips(id,list,key,label){
+  var h=$(id);
+  list.forEach(function(it,i){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=label(it); b.setAttribute('aria-pressed',i===sel[key]);
+    b.addEventListener('click',function(){sel[key]=i;h.querySelectorAll('.chip').forEach(function(c,j){c.setAttribute('aria-pressed',j===i)});build()});
+    h.appendChild(b);
+  });
+}
+function build(){
+  var b=BASES[sel.b],s=BANOS[sel.s],t=TOPS[sel.t];
+  $('bBig').textContent=b[0]+s[1]+t[2];
+  $('bName').textContent=b[1]+' '+t[0].replace(/^./,function(c){return c.toLowerCase()})+' · '+s[0];
+  $('bDesc').textContent=b[1]+' bañado en '+s[0]+', con '+t[1]+'. Una creación única en el universo, servida solo para ti.';
+}
+chips('chBase',BASES,'b',function(x){return x[0]+' '+x[1]});
+chips('chBano',BANOS,'s',function(x){return x[0]});
+chips('chTop',TOPS,'t',function(x){return x[2]+' '+x[0]});
+build();
+var WISHES=[
+ 'Deseo que cada noche de estudio termine con un postre.',
+ 'Deseo que todos tus exámenes salgan mejor de lo que esperas.',
+ 'Deseo que descanses sin culpa y que sonrías sin motivo.',
+ 'Deseo que nunca dudes de lo valiosa que eres.',
+ 'Deseo que el día de la graduación levantes la cabeza y digas: lo logré.',
+ 'Deseo una mesa grande, chocolate para los dos y todo el tiempo del mundo.',
+ 'Deseo que nos casemos y que el contador siga corriendo en otra forma.'
+];
+$('wishBtn').addEventListener('click',function(){
+  $('wish').textContent=pick(WISHES);
+  shoot=reduce?null:{x:W*.9,y:H*.12,vx:-9,vy:4.5,l:0};
+  rain(['⭐','✨','🌟'],18);
+});
+$('rainBtn').addEventListener('click',function(){rain(['🍫','🍬','🍭','🍪','🍩','🍓','🍰'],46)});
+
+/* ---------- CANCIÓN ---------- */
+var song=$('song'), player=$('player'), prog=$('prog');
+function fmt(s){s=Math.floor(s||0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+function toggle(){
+  if(song.paused){var p=song.play(); if(p&&p.catch)p.catch(function(){})} else song.pause();
+}
+song.addEventListener('play',function(){player.classList.add('playing');$('heroPlay').querySelector('span').textContent='Pausar la canción'});
+song.addEventListener('pause',function(){player.classList.remove('playing');$('heroPlay').querySelector('span').textContent='Tocar la canción'});
+song.addEventListener('timeupdate',function(){
+  var d=song.duration||0; prog.style.width=d?(song.currentTime/d*100)+'%':'0';
+  $('time').textContent=fmt(song.currentTime)+' / '+fmt(d);
+});
+$('pb').addEventListener('click',toggle); $('heroPlay').addEventListener('click',toggle);
+function seek(e){var r=$('bar').getBoundingClientRect(); if(song.duration) song.currentTime=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*song.duration}
+$('bar').addEventListener('click',seek);
+$('bar').addEventListener('keydown',function(e){if(e.key==='ArrowRight')song.currentTime+=5;if(e.key==='ArrowLeft')song.currentTime-=5});
+})();
+</script>
+
+</body>
+</html>
